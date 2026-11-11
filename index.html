@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>My AI World</title>
+<style>
+:root{--bg:#19080f;--panel:#2a101a;--panel2:#381725;--line:#6e3b50;--pink:#e29ab5;--cream:#faedf2;--muted:#c9aab7}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 80% 0,#512036 0,transparent 32%),var(--bg);color:var(--cream);font-family:Arial,sans-serif;min-height:100vh}
+header{height:76px;padding:0 5%;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #51283a;background:#19080fcc;position:sticky;top:0;z-index:5;backdrop-filter:blur(12px)}
+.logo{font-size:21px;font-weight:bold;color:#f0b5ca}.actions{display:flex;gap:10px}button{cursor:pointer;border:1px solid var(--line);border-radius:12px;padding:10px 15px;background:#472034;color:var(--cream)}button.primary{background:linear-gradient(120deg,#c46c8d,#77334f);border:0}
+main{max-width:1100px;margin:auto;padding:36px 22px}.page{display:none}.page.active{display:block}h1{font-size:clamp(30px,5vw,48px);margin:18px 0;color:#f1c4d4}h2{color:#f0b5ca}p{color:var(--muted);line-height:1.8}
+.hero{text-align:center;padding:90px 10px 100px;position:relative;overflow:hidden;border-radius:28px;background:linear-gradient(140deg,#351322aa,#1d0b14dd);border:1px solid #623247}
+.particle{position:absolute;width:5px;height:5px;border-radius:50%;background:#e9a2bc;opacity:.55;animation:float 7s infinite ease-in-out}
+@keyframes float{0%,100%{transform:translateY(0);opacity:.2}50%{transform:translateY(-35px);opacity:.8}}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px;margin-top:24px}
+.character{padding:22px;border-radius:20px;background:linear-gradient(145deg,#3b1928,#25101a);border:1px solid #684054;box-shadow:0 12px 35px #0003}
+.avatar{height:115px;border-radius:16px;display:grid;place-items:center;font-size:45px;background:linear-gradient(135deg,#63304a,#2a1220);margin-bottom:16px}
+.tag{display:inline-block;color:#f1b6cc;background:#57263e;padding:6px 10px;border-radius:30px;font-size:12px}
+.profile{max-width:680px;margin:30px auto;padding:28px;border:1px solid var(--line);border-radius:22px;background:var(--panel)}
+.chatbox{max-width:850px;margin:22px auto;background:#24101a;border:1px solid #684054;border-radius:22px;overflow:hidden}
+.chathead{padding:18px 22px;background:#351725;display:flex;justify-content:space-between;align-items:center}
+.messages{height:430px;overflow:auto;padding:22px;display:flex;flex-direction:column;gap:18px}
+.msg{max-width:78%;padding:13px 16px;border-radius:17px;line-height:1.7;white-space:pre-wrap}
+.msg.bot{align-self:flex-start;background:#482337;border:1px solid #714258}.msg.user{align-self:flex-end;background:#81405c}
+.composer{display:flex;gap:10px;padding:15px;border-top:1px solid #51283a}.composer input{flex:1;min-width:0;padding:13px;border-radius:12px;border:1px solid #684054;background:#160810;color:white}
+.small{font-size:13px;color:#c9aab7}
+@media(max-width:600px){header{padding:0 14px}.logo{font-size:16px}.messages{height:55vh}.msg{max-width:90%}}
+</style></head>
+<body>
+<header><div class="logo">✦ My AI World</div><div class="actions"><button onclick="toggleLang()" id="langBtn">English</button><button onclick="showPage('home')" id="homeNav">الرئيسية</button><button onclick="showPage('characters')" id="charNav">الشخصيات</button><button onclick="location.href='/logout'" id="logout">خروج</button></div></header>
+<main>
+<section id="home" class="page active"><div class="hero" id="hero"><span class="particle" style="top:20%;left:15%"></span><span class="particle" style="top:70%;left:28%;animation-delay:1s"></span><span class="particle" style="top:25%;right:18%;animation-delay:2s"></span><span class="particle" style="top:80%;right:12%;animation-delay:3s"></span><p id="eyebrow">مساحتك الخاصة للخيال والحوار</p><h1 id="welcome">أهلًا بك في عالمك</h1><p id="heroText">اختاري شخصية وابدئي محادثة جديدة في عالم من الحكايات والأفكار.</p><button class="primary" onclick="showPage('characters')" id="explore">اكتشفي الشخصيات</button></div></section>
+<section id="characters" class="page"><h1 id="charactersTitle">الشخصيات</h1><p id="charactersSub">اختاري الشخصية التي ترغبين في التحدث معها.</p><div class="cards" id="cards"></div></section>
+<section id="profile" class="page"><button onclick="showPage('characters')" id="back">← رجوع</button><div class="profile"><div class="avatar" id="profileAvatar">✦</div><h1 id="profileName"></h1><span class="tag" id="profileTag"></span><h2 id="aboutTitle">نبذة</h2><p id="profileDesc"></p><h2 id="traitsTitle">الصفات</h2><p id="profileTraits"></p><button class="primary" onclick="openChat()" id="startChat">ابدئي المحادثة</button></div></section>
+<section id="chat" class="page"><div class="chatbox"><div class="chathead"><div><strong id="chatName">الشخصية</strong><div class="small" id="chatStatus">متصل بعالمك</div></div><button onclick="showPage('characters')" id="switchChar">تغيير الشخصية</button></div><div class="messages" id="messages"></div><div class="composer"><input id="message" placeholder="اكتبي رسالتك..." onkeydown="if(event.key==='Enter')sendMessage()"><button class="primary" onclick="sendMessage()" id="send">إرسال</button></div></div></section>
+</main>
+<script>
+const chars={{ characters|tojson }};
+let lang='ar',selected=null,history=[];
+const $=id=>document.getElementById(id);
+function nameOf(c){return lang==='ar'?c.name:c.name_en}function descOf(c){return lang==='ar'?c.description:c.description_en}function traitsOf(c){return lang==='ar'?c.traits:c.traits_en}function tagOf(c){return lang==='ar'?c.tag:c.tag_en}
+function renderCards(){$('cards').innerHTML=chars.map(c=>`<article class="character"><div class="avatar">✦</div><h2>${nameOf(c)}</h2><span class="tag">${tagOf(c)}</span><p>${descOf(c)}</p><p class="small">${traitsOf(c)}</p><button class="primary" onclick="openProfile('${c.id}')">${lang==='ar'?'الملف الشخصي':'View profile'}</button></article>`).join('')}
+function showPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));$(id).classList.add('active');if(id==='characters')renderCards();window.scrollTo(0,0)}
+function openProfile(id){selected=chars.find(c=>c.id===id);$('profileAvatar').textContent='✦';$('profileName').textContent=nameOf(selected);$('profileTag').textContent=tagOf(selected);$('profileDesc').textContent=descOf(selected);$('profileTraits').textContent=traitsOf(selected);$('aboutTitle').textContent=lang==='ar'?'نبذة':'About';$('traitsTitle').textContent=lang==='ar'?'الصفات':'Traits';$('startChat').textContent=lang==='ar'?'ابدئي المحادثة':'Start chatting';showPage('profile')}
+function openChat(){history=[];$('messages').innerHTML='';$('chatName').textContent=nameOf(selected);addMessage('bot',lang==='ar'?selected.intro:selected.intro_en);showPage('chat')}
+function addMessage(role,text){let d=document.createElement('div');d.className='msg '+role;d.textContent=text;$('messages').appendChild(d);$('messages').scrollTop=$('messages').scrollHeight}
+async function sendMessage(){let input=$('message'),text=input.value.trim();if(!text||!selected)return;input.value='';addMessage('user',text);history.push({role:'user',text});let wait=lang==='ar'?'يفكر...':'Thinking...';addMessage('bot',wait);let waiting=$('messages').lastChild;try{let r=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:text,lang,character:{name:nameOf(selected),traits:traitsOf(selected),description:descOf(selected)},history})});let data=await r.json();waiting.textContent=data.reply||data.error||'Error';if(data.reply)history.push({role:'assistant',text:data.reply})}catch(e){waiting.textContent=lang==='ar'?'حدث خطأ في الاتصال.':'Connection error.'}}
+function toggleLang(){lang=lang==='ar'?'en':'ar';document.documentElement.lang=lang;document.documentElement.dir=lang==='ar'?'rtl':'ltr';$('langBtn').textContent=lang==='ar'?'English':'العربية';$('homeNav').textContent=lang==='ar'?'الرئيسية':'Home';$('charNav').textContent=lang==='ar'?'الشخصيات':'Characters';$('logout').textContent=lang==='ar'?'خروج':'Log out';$('eyebrow').textContent=lang==='ar'?'مساحتك الخاصة للخيال والحوار':'Your space for imagination and conversation';$('welcome').textContent=lang==='ar'?'أهلًا بك في عالمك':'Welcome to your world';$('heroText').textContent=lang==='ar'?'اختاري شخصية وابدئي محادثة جديدة في عالم من الحكايات والأفكار.':'Choose a character and start a conversation in a world of stories and ideas.';$('explore').textContent=lang==='ar'?'اكتشفي الشخصيات':'Explore characters';$('charactersTitle').textContent=lang==='ar'?'الشخصيات':'Characters';$('charactersSub').textContent=lang==='ar'?'اختاري الشخصية التي ترغبين في التحدث معها.':'Choose who you would like to talk to.';$('back').textContent=lang==='ar'?'← رجوع':'← Back';$('message').placeholder=lang==='ar'?'اكتبي رسالتك...':'Write a message...';$('send').textContent=lang==='ar'?'إرسال':'Send';$('switchChar').textContent=lang==='ar'?'تغيير الشخصية':'Change character';$('chatStatus').textContent=lang==='ar'?'متصل بعالمك':'In your world';renderCards();if(selected){$('profileName').textContent=nameOf(selected);$('profileTag').textContent=tagOf(selected);$('profileDesc').textContent=descOf(selected);$('profileTraits').textContent=traitsOf(selected);$('chatName').textContent=nameOf(selected)}}
+renderCards();
+</script></body></html>

@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>My AI World | Login</title>
+<style>
+:root{--bg:#19080f;--panel:#2b101b;--pink:#d98ba8;--cream:#f8eaf0}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;background:radial-gradient(circle at 20% 15%,#542039 0,transparent 35%),var(--bg);font-family:Arial,sans-serif;color:var(--cream)}
+.card{width:min(420px,92vw);padding:36px;border:1px solid #754052;border-radius:24px;background:#2b101bdc;box-shadow:0 20px 70px #0008;text-align:center}
+h1{margin:0 0 10px;color:#f0b5ca}p{color:#d8b9c5}input{width:100%;padding:14px;border-radius:12px;border:1px solid #754052;background:#1c0b12;color:white;margin:18px 0}
+button{cursor:pointer;border:0;border-radius:12px;padding:13px 20px;background:linear-gradient(120deg,#bd6688,#74334e);color:white;font-weight:bold}
+.lang{position:fixed;top:18px;left:18px;background:#3a1726;border:1px solid #754052}.error{color:#ffb3c8}
+</style></head>
+<body>
+<button class="lang" onclick="toggleLang()">English</button>
+<form class="card" method="post">
+<h1 id="title">عالم الذكاء الاصطناعي</h1><p id="subtitle">أدخلي كلمة المرور للمتابعة</p>
+<input type="password" name="password" id="password" placeholder="كلمة المرور" required>
+<input type="hidden" name="lang" id="lang" value="ar">
+{% if error %}<p class="error">{{ error }}</p>{% endif %}
+<button id="submit" type="submit">دخول</button>
+</form>
+<script>
+let en=false;function toggleLang(){en=!en;document.documentElement.lang=en?'en':'ar';document.documentElement.dir=en?'ltr':'rtl';document.getElementById('title').textContent=en?'My AI World':'عالم الذكاء الاصطناعي';document.getElementById('subtitle').textContent=en?'Enter your password to continue':'أدخلي كلمة المرور للمتابعة';document.getElementById('password').placeholder=en?'Password':'كلمة المرور';document.getElementById('submit').textContent=en?'Log in':'دخول';document.querySelector('.lang').textContent=en?'العربية':'English';document.getElementById('lang').value=en?'en':'ar'}
+</script></body></html>
